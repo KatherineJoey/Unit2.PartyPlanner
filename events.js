@@ -4,44 +4,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const apiUrl =
     "https://fsa-crud-2aa9294fe819.herokuapp.com/api/2405-FTB-ET-WEB-PT/events";
 
-  // Mock data
-  let parties = [
-    {
-      id: 1,
-      name: "Tessa turns 6!",
-      date: "2024-07-25",
-      time: "15:00",
-      location: "123 Queens St",
-      description: "Come join us as we celebrate Tessa's 6th Birthday!",
-    },
-    {
-      id: 2,
-      name: "Office Party",
-      date: "2024-08-25",
-      time: "20:00",
-      location: "250 West Houston St",
-      description: "Let's celebrate end of the summer season!",
-    },
-    {
-      id: 3,
-      name: "Jenny and Chris's Babyshower",
-      date: "2024-09-15",
-      time: "15:30",
-      location: "16 Riverview Park",
-      description:
-        "We are happy to welcome a new addition to Jenny and Chris's family! Join us in their babyshower!!",
-    },
-  ];
-
-  // Function to fetch and display parties
+// Function to fetch and display parties
   async function renderParties() {
     try {
       const response = await fetch(apiUrl);
       if (!response.ok) throw new Error("Failed to fetch parties");
       const parties = await response.json();
+      console.log(parties);
 
       partyList.innerHTML = "";
-      parties.forEach((party) => {
+      parties.data.forEach((party) => {
         const partyItem = document.createElement("div");
         partyItem.classList.add("party-item");
         partyItem.innerHTML = `
@@ -86,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, date, time, location, description }),
+        body: JSON.stringify({ name, date: new Date(date), location, description }),
       });
       if (!response.ok) throw new Error("Failed to add party");
       await renderParties(); // Refresh the list after adding
